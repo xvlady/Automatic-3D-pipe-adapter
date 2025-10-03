@@ -159,6 +159,7 @@ def create_hollow_cone_with_wall_thickness(d_base_outer, d_top_outer, height, wa
 
     return mesh_obj
 
+
 if __name__ == '__main__':
     print("Параметры цилиндра большого в мм")
     print("диаметр внешний в мм")
@@ -169,19 +170,14 @@ if __name__ == '__main__':
     # c = 20
     # z = 1
     # x = 10
-    print("Параметры цилиндра малого в мм")
-    print("диаметр внешний в мм")
+    print("Параметры цилиндра малого")
+    print("диаметр внешний")
     x2 = int(input())
-    print("длина в мм")
+    print("длина")
     c2 = int(input())
-    print("Параметры цилиндра всех в мм")
-    print("толщина стенок в мм")
+    print("Параметры цилиндра всех")
+    print("толщина стенок")
     z = int(input())
-    x = x/10
-    c = c/10
-    x2 = x2/10
-    c2 = c2/10
-    z = z/10
     z2 = z
     # Параметры цилиндров
     #x2 = 5
@@ -209,10 +205,11 @@ if __name__ == '__main__':
         center_z=0,
         y_base=c,
         segments=64,
-        cut_height=c4 # усечь конус на c4 от
+        cut_height=c4 # усечь конус на c4
     )
 
     # Объединяем все
     combined_data = mesh.Mesh(np.concatenate([cylinder1.data, cone_mesh.data, cylinder2.data]))
-    combined_data.save('vacuum_cleaner.stl')
-    print("3D модель в 'vacuum_cleaner.stl'")
+
+    combined_data.save(f'vacuum_cleaner_adapter_{x}_{x2}.stl')
+    print(f'vacuum_cleaner_adapter_{x}_{x2}.stl')
