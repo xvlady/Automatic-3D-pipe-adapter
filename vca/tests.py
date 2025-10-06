@@ -2,10 +2,17 @@ import os
 import unittest
 
 from adapter import generate_stl
+from con_mesh import ConMesh
+from text import text_3d
 
 
 class TestGenerateSTL(unittest.TestCase):
     test_filename = ''
+
+    def test_text(self):
+        self.assertEqual(ConMesh(37.0, 39.0, 2).text, '39 x 33')
+        self.assertEqual(ConMesh(37.06, 39.04, 2).text, '39 x 33')
+        self.assertEqual(ConMesh(37.6, 39.4, 2).text, '39.6 x 33.4')
 
     def test_stl_generation(self):
         """Тест: генерация STL-файла"""
@@ -13,6 +20,7 @@ class TestGenerateSTL(unittest.TestCase):
         r_cylinder2 = 37
         thickness = 2.0
         len_cylinder = 30.0
+
         self.test_filename = f'vacuum_cleaner_adapter_{r_cylinder1}_{r_cylinder2}.stl'
 
         # Удаляем файл, если он существует
@@ -55,3 +63,8 @@ class TestGenerateSTL(unittest.TestCase):
     #         os.remove(self.test_filename)
     #     if os.path.exists("cylinder_section_from_mesh.png"):
     #         os.remove("cylinder_section_from_mesh.png")
+
+    def test_text_3d(self):
+        mesh = text_3d('2')
+        output_file = "digits_1234_manual.stl"
+        mesh.export(output_file)

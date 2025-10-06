@@ -1,12 +1,12 @@
 import numpy as np
-from stl import Mesh
+from trimesh import Trimesh
 
 from con_mesh import ConMesh
 
 
 def create_hollow_cone_with_wall_thickness(
         con: ConMesh, center_x=0, center_z=0, y_base=0, segments=64, cut_height=None
-):
+) -> Trimesh:
 
     if cut_height is None or cut_height > con.height:
         cut_height = con.height
@@ -74,10 +74,4 @@ def create_hollow_cone_with_wall_thickness(
         faces.append([s + i, 3 * s + next_i, s + next_i])
 
     faces = np.array(faces)
-
-    mesh_obj = Mesh(np.zeros(faces.shape[0], dtype=Mesh.dtype))
-    for i, f in enumerate(faces):
-        for j in range(3):
-            mesh_obj.vectors[i][j] = vertices[f[j]]
-
-    return mesh_obj
+    return Trimesh(vertices=vertices, faces=faces)
