@@ -1,7 +1,17 @@
+from enum import Enum
+
+
+class InsertText(Enum):
+    Top = 1
+    Base = 2
+    No = 0
+
+
 class ConMesh:
     d_base_outer: float
     d_top_outer: float
     thickness_cylinder: float
+    insert_text: InsertText
     engrave_depth: float = 1
 
     def __init__(
@@ -12,8 +22,10 @@ class ConMesh:
     ):
         if d_base_outer > d_top_outer:
             self.d_base_outer, self.d_top_outer = d_base_outer, d_top_outer
+            self.insert_text = InsertText.Base
         else:
             self.d_base_outer, self.d_top_outer = d_top_outer, d_base_outer
+            self.insert_text = InsertText.Top
 
         if thickness_cylinder > d_top_outer:
             raise ValueError("Толщина стенки слишком велика, внутренний диаметр <= 0")
@@ -62,5 +74,12 @@ class ConMesh:
         return self.d_top_outer - 2 * self.thickness_cylinder
 
     @property
-    def text(self) ->  str:
-        return f'{self.d_base_inner} x {self.d_top_outer}'
+    def text(self) -> str:
+        def fmt(x):
+            x_rounded = int(x * 10) / 10
+            if x_rounded == int(x):
+                return str(int(x))
+            else:
+                return f"{x_rounded:.1f}"
+
+        return f"{fmt(self.d_base_inner)} x {fmt(self.d_top_outer)}"
